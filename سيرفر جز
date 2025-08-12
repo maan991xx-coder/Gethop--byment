@@ -1,0 +1,25 @@
+const express = require('express');
+const emailjs = require('emailjs-com');
+const app = express();
+
+app.use(express.urlencoded({ extended: true }));
+emailjs.init(process.env.EMAILJS_USER_ID);
+
+app.post('/submit-order', async (req, res) => {
+  try {
+    await emailjs.send(
+      process.env.EMAILJS_SERVICE_ID,
+      process.env.EMAILJS_TEMPLATE_ID,
+      {
+        to_email: req.body.email,
+        amount: req.body.amount,
+        message: "سنرسل لك تفاصيل الدفع لاحقًا"
+      }
+    );
+    res.send('تم تقديم طلبك بنجاح!');
+  } catch (error) {
+    res.status(500).send('خطأ في النظام');
+  }
+});
+
+app.listen(process.env.PORT || 3000);
