@@ -1,0 +1,12 @@
+// مثال بإرسال إيميل بعد الدفع اليدوي
+const sendConfirmation = async (order) => {
+  await emailjs.send(
+    'service_jxoxvaf',
+    'template_k73h7ko',
+    {
+      to_email: order.email,
+      amount: order.amount,
+      order_id: order.id
+    }
+  );
+};
